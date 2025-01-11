@@ -1,0 +1,7 @@
+{
+  "platform": "bilibili",
+  "room_id": "9433673",
+  "danmaku_display_mode": 4,
+  "send_delay": 5,
+  "segment_time_length": 5
+}
