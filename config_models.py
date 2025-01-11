@@ -3,10 +3,6 @@ from typing import TypeVar, Type
 
 from pydantic import BaseModel
 
-CONFIG_BASE_PATH = Path(__file__).parent / "configs"
-CONFIG_PATH = CONFIG_BASE_PATH / "config.json"
-CREDENTIAL_PATH = CONFIG_BASE_PATH / "credential.json"
-
 T = TypeVar('T')
 
 
