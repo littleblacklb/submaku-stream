@@ -1,7 +1,7 @@
 from bilibili_api import Danmaku, DmMode
 from bilibili_api.live import ScreenResolution
 
-from storage import Statics, ConfigStorage
+from utils.storage import Statics, ConfigStorage
 
 
 async def send_danmaku(msg: str) -> dict:
