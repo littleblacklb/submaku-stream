@@ -9,7 +9,7 @@ from config_models import Credential, Config
 
 T = TypeVar('T')
 
-CONFIG_BASE_PATH = Path(__file__).parent / "configs"
+CONFIG_BASE_PATH = Path(__file__).parent.parent / "configs"
 CONFIG_PATH = CONFIG_BASE_PATH / "config.json"
 CREDENTIAL_PATH = CONFIG_BASE_PATH / "credential.json"
 
