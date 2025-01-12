@@ -20,6 +20,7 @@ class Config(MyBaseModel):
     danmaku_display_mode: Literal["FLY", "TOP", "BOTTOM"]
     send_delay: int
     segment_time_length: int
+    whisper_params: dict
 
 
 class Credential(MyBaseModel):

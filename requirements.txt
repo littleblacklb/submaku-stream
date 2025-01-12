@@ -2,5 +2,6 @@ httpx
 bilibili-api-python
 pydantic~=2.10.5
 ffmpeg-python~=0.2.0
-numpy~=2.2.1
-soundfile~=0.13.0
+numpy
+soundfile
+openai-whisper

@@ -3,5 +3,15 @@
   "room_id": "9433673",
   "danmaku_display_mode": "BOTTOM",
   "send_delay": 5,
-  "segment_time_length": 5
+  "segment_time_length": 5,
+  "whisper_params": {
+    "language": "en",
+    "fp16": true,
+    "suppress_tokens": [
+      -1
+    ],
+    "temperature": 0.0,
+    "beam_size": 5,
+    "best_of": 5
+  }
 }
