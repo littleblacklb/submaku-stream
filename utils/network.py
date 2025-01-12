@@ -10,7 +10,6 @@ async def send_danmaku(msg: str) -> dict:
     :param msg: message to be sent
     :return: API result
     """
-    # TODO mode to be customized
     sematic_code = ConfigStorage.get_instance().config.danmaku_display_mode
     return await Statics.live_room.send_danmaku(Danmaku(msg, mode=DmMode[sematic_code].value))
 
