@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TypeVar, Type
+from typing import TypeVar, Type, Literal
 
 from pydantic import BaseModel
 
@@ -17,7 +17,7 @@ class MyBaseModel(BaseModel):
 class Config(MyBaseModel):
     platform: str
     room_id: int
-    danmaku_display_mode: int
+    danmaku_display_mode: Literal["FLY", "TOP", "BOTTOM"]
     send_delay: int
     segment_time_length: int
 

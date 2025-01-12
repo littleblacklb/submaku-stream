@@ -1,7 +1,7 @@
 from bilibili_api import Danmaku, DmMode
 from bilibili_api.live import ScreenResolution
 
-from storage import Statics
+from storage import Statics, ConfigStorage
 
 
 async def send_danmaku(msg: str) -> dict:
@@ -11,7 +11,8 @@ async def send_danmaku(msg: str) -> dict:
     :return: API result
     """
     # TODO mode to be customized
-    return await Statics.live_room.send_danmaku(Danmaku(msg, mode=DmMode.BOTTOM))
+    sematic_code = ConfigStorage.get_instance().config.danmaku_display_mode
+    return await Statics.live_room.send_danmaku(Danmaku(msg, mode=DmMode[sematic_code].value))
 
 
 async def get_stream_urls() -> list:
