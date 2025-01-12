@@ -3,7 +3,7 @@ import numpy as np
 import soundfile as sf
 
 
-def process_audio_segments(stream_url, chunk_duration=10, sample_rate=16000, cookie=None):
+def process_audio_segments(stream_url, chunk_duration=10, sample_rate=16000, cookie=None) -> np.ndarray:
     """
     Processes a live audio stream in consecutive fixed-length chunks.
 
