@@ -35,3 +35,4 @@ _config = ConfigStorage.get_instance()
 class Statics:
     credential: bilibili_api.Credential = bilibili_api.Credential(_config.credential.SESSDATA, _config.credential.bili_jct)
     live_room: LiveRoom = LiveRoom(_config.config.room_id, credential)
+    debug: bool = _config.config.debug

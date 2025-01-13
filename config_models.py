@@ -21,6 +21,7 @@ class Config(MyBaseModel):
     send_delay: int
     segment_time_length: int
     whisper_params: dict
+    debug: bool
 
 
 class Credential(MyBaseModel):

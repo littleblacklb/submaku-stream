@@ -1,9 +1,17 @@
+import asyncio.subprocess
+from subprocess import Popen
+
 import ffmpeg
+import loguru
 import numpy as np
 import soundfile as sf
 
+from errors.EndOfStream import EndOfStream
 
-def process_audio_segments(stream_url, chunk_duration=10, sample_rate=16000, cookie=None) -> np.ndarray:
+logger = loguru.logger
+
+
+async def process_audio_segments(stream_url, chunk_duration=10, sample_rate=16000, cookie=None):
     """
     Processes a live audio stream in consecutive fixed-length chunks.
 
@@ -16,40 +24,34 @@ def process_audio_segments(stream_url, chunk_duration=10, sample_rate=16000, coo
     Yields:
         np.ndarray: A NumPy array containing raw audio data for each chunk.
     """
-    try:
-        # Calculate the number of samples per chunk
-        samples_per_chunk = chunk_duration * sample_rate
+    # Calculate the number of samples per chunk
+    samples_per_chunk = chunk_duration * sample_rate
 
-        # Prepare FFmpeg input arguments with optional headers
-        input_args = {}
-        if cookie:
-            input_args['headers'] = f"Cookie: {cookie}"
+    # Prepare FFmpeg input arguments with optional headers
+    input_args = {}
+    if cookie:
+        input_args['headers'] = f"Cookie: {cookie}"
 
-        # Start the FFmpeg process
-        process = (
-            ffmpeg
-            .input(stream_url, **input_args)
-            .output("pipe:1", format="s16le", acodec="pcm_s16le", ar=sample_rate, ac=1)  # 16kHz, mono
-            .run_async(pipe_stdout=True, pipe_stderr=True, quiet=True)
-        )
+    # Start the FFmpeg process
+    process: Popen = (
+        ffmpeg
+        .input(stream_url, **input_args)
+        .output("pipe:1", format="s16le", acodec="pcm_s16le", ar=sample_rate, ac=1)  # 16kHz, mono
+        .run_async(pipe_stdout=True, pipe_stderr=True, quiet=True)
+    )
+    logger.success("FFmpeg process has been launched.")
 
-        print("Processing audio stream...")
-        while True:
-            # Read fixed-length audio chunks from the stream
-            chunk_size = samples_per_chunk * 2  # 2 bytes per sample (16-bit PCM)
-            raw_audio = process.stdout.read(chunk_size)
+    while True:
+        # Read fixed-length audio chunks from the stream
+        chunk_size = samples_per_chunk * 2  # 2 bytes per sample (16-bit PCM)
+        raw_audio = await asyncio.to_thread(process.stdout.read, chunk_size)
 
-            if not raw_audio or len(raw_audio) < chunk_size:
-                print("End of stream or insufficient data for a full chunk.")
-                break
+        if not raw_audio:
+            raise EndOfStream("Stream ended.")
 
-            # Convert raw audio to NumPy array
-            audio_array = np.frombuffer(raw_audio, dtype=np.int16).astype(np.float32) / 32768.0  # Normalize
-            yield audio_array
-
-    except ffmpeg.Error as e:
-        print("Error occurred while processing the audio stream:", e)
-        print(e.stderr.decode())
+        # Convert raw audio to NumPy array
+        audio_array = np.frombuffer(raw_audio, dtype=np.int16).astype(np.float32) / 32768.0  # Normalize
+        yield audio_array
 
 
 def save_audio_to_wav(audio_array, sample_rate, output_file):
