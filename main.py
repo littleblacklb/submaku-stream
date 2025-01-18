@@ -46,7 +46,7 @@ async def main():
 
 async def danmaku_worker(model: Whisper, audio_array: np.ndarray):
     t0_perf = time.time()
-    result = model.transcribe(audio_array)
+    result = model.transcribe(audio_array, **ConfigStorage.get_instance().config.whisper_params)
     delta_t_perf = (time.time() - t0_perf) * 1000
     processed_text = text.remove_repeated_phrases(result["text"])
     logger.info(f'{processed_text} {delta_t_perf:.2f}ms')
