@@ -1,9 +1,10 @@
 """
 Base Transcription
 """
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class BaseTranscriber(ABC):
+    @abstractmethod
     async def transcribe(self, audio_segments):
         raise NotImplementedError
