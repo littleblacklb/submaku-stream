@@ -11,7 +11,7 @@ from errors.EndOfStream import EndOfStream
 from transcribers import whispers
 from utils import network, text
 from utils.audio import process_audio_segments
-from utils.storage import ConfigStorage, Statics
+from utils.storage import ConfigStorage
 
 logger = loguru.logger
 config = ConfigStorage.get_instance().config
@@ -25,7 +25,7 @@ waiting_for_appending_queue_lock = asyncio.Lock()
 
 
 async def main():
-    if Statics.debug:
+    if config.debug:
         logger.warning("Debug mode is enabled.")
         logger.remove()
         logger.add(sys.stdout, level="DEBUG")
