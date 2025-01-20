@@ -29,32 +29,29 @@ async def main():
         logger.warning("Debug mode is enabled.")
         logger.remove()
         logger.add(sys.stdout, level="DEBUG")
-    try:
-        stream_url = (await network.get_stream_urls())[0]
-        logger.info(f"Stream URL: {stream_url}")
+    stream_url = (await network.get_stream_urls())[0]
+    logger.info(f"Stream URL: {stream_url}")
 
-        logger.info("Loading model...")
-        t0_perf = time.time()
-        model = whispers.LocalWhisper("base").model
-        delta_t_perf = (time.time() - t0_perf) * 1000
-        logger.success(f"Model loaded. {delta_t_perf:.2f}ms")
+    logger.info("Loading model...")
+    t0_perf = time.time()
+    model = whispers.LocalWhisper("base").model
+    delta_t_perf = (time.time() - t0_perf) * 1000
+    logger.success(f"Model loaded. {delta_t_perf:.2f}ms")
 
-        await waiting_for_appending_queue_lock.acquire()
-        asyncio.create_task(sending_worker())
-        logger.success("sending_worker task has been created.")
+    await waiting_for_appending_queue_lock.acquire()
+    asyncio.create_task(sending_worker())
+    logger.success("sending_worker task has been created.")
 
-        while 1:
-            try:
-                async for audio_chunk in process_audio_segments(stream_url, chunk_duration=config.segment_time_length):
-                    asyncio.create_task(voice2text_worker(model, audio_chunk))
-            except ffmpeg.Error as e:
-                logger.error("Error occurred while processing the audio stream:", e)
-                logger.error(e.stderr.decode())
-            except EndOfStream:
-                logger.warning("Stream ended. Program exits")
-                sys.exit(0)
-    except asyncio.CancelledError:
-        logger.warning("CancelledError is caught, exiting the program.")
+    while 1:
+        try:
+            async for audio_chunk in process_audio_segments(stream_url, chunk_duration=config.segment_time_length):
+                asyncio.create_task(voice2text_worker(model, audio_chunk))
+        except EndOfStream:
+            logger.warning("Stream ended, program exiting.")
+            sys.exit(0)
+        except ffmpeg.Error as e:
+            logger.error("Error occurred while processing the audio stream:", e)
+            logger.error(e.stderr.decode())
 
 
 async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
