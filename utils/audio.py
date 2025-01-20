@@ -48,6 +48,8 @@ async def process_audio_segments(stream_url, chunk_duration=10, sample_rate=1600
 
         if not raw_audio:
             raise EndOfStream("Stream ended.")
+        if len(raw_audio) < chunk_size:
+            logger.warning("Less than chunk_size.")
 
         # Convert raw audio to NumPy array
         audio_array = np.frombuffer(raw_audio, dtype=np.int16).astype(np.float32) / 32768.0  # Normalize

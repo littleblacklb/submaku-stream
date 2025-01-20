@@ -61,8 +61,13 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
     global sent_danmaku_amount
     sent_danmaku_amount += 1
     t0_perf = time.time()
-    result = await asyncio.to_thread(model.transcribe, audio_array,
-                                     **ConfigStorage.get_instance().config.whisper_params)
+    try:
+        result = await asyncio.to_thread(model.transcribe, audio_array,
+                                         **ConfigStorage.get_instance().config.whisper_params)
+    except RuntimeError as e:
+        logger.error(repr(e))
+        return
+
     delta_t_perf = (time.time() - t0_perf) * 1000
     logger.debug(result)
     if not (res_text := result["text"]):
