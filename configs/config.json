@@ -14,5 +14,7 @@
     "beam_size": 5,
     "best_of": 5
   },
+  "max_order_num": 10,
+  "danmaku_text_format": "{transcription_text} {danmaku_order_num}",
   "debug": false
 }

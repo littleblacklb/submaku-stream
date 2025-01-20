@@ -28,7 +28,7 @@ async def main():
 
         logger.info("Loading model...")
         t0_perf = time.time()
-        model = whispers.LocalWhisper("turbo").model
+        model = whispers.LocalWhisper("base").model
         delta_t_perf = (time.time() - t0_perf) * 1000
         logger.success(f"Model loaded. {delta_t_perf:.2f}ms")
         while 1:
@@ -46,14 +46,28 @@ async def main():
 
 
 async def danmaku_worker(model: Whisper, audio_array: np.ndarray):
-    t0_perf = time.time()
-    result = model.transcribe(audio_array, **ConfigStorage.get_instance().config.whisper_params)
-    delta_t_perf = (time.time() - t0_perf) * 1000
-    processed_text = text.remove_repeated_phrases(result["text"])
-    logger.info(f'{processed_text} {delta_t_perf:.2f}ms')
-    if not Statics.debug:
-        resp = await network.send_danmaku(processed_text)
-        logger.debug(resp)
+    sent_danmaku_amount = 0
+
+    async def _worker():
+        nonlocal sent_danmaku_amount
+        sent_danmaku_amount += 1
+        t0_perf = time.time()
+        result = model.transcribe(audio_array, **ConfigStorage.get_instance().config.whisper_params)
+        delta_t_perf = (time.time() - t0_perf) * 1000
+        logger.debug(result)
+        processed_transcription_text = text.remove_repeated_phrases(result["text"])
+        formatted_text = config.danmaku_text_format.format(
+            transcription_text=processed_transcription_text,
+            sent_danmaku_amount=sent_danmaku_amount,
+            danmaku_order_num=sent_danmaku_amount % config.max_order_num
+        )
+        logger.debug(formatted_text)
+        logger.info(f'{formatted_text} {delta_t_perf:.2f}ms')
+        if not Statics.debug:
+            resp = await network.send_danmaku(formatted_text)
+            logger.debug(resp)
+
+    await _worker()
 
 
 if __name__ == '__main__':
