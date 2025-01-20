@@ -87,12 +87,15 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
         formatted_text = formatted_text[:mcpas]
         i = 0
         end = 0
-        for end in range(mcpd, mcpas + 1, mcpd):
+        for end in range(mcpd, len(formatted_text) + 1, mcpd):
             segment = formatted_text[end - mcpd:end]
             logger.info(f"Segment{i}: {segment}")
             msg_queue.append(segment)
             i += 1
         formatted_text = formatted_text[end: end + mcpd - 1]
+        if not formatted_text:
+            logger.info(f"Segment{i}: {formatted_text}")
+
     if formatted_text:
         msg_queue.append(formatted_text)
     if waiting_for_appending_queue_lock.locked():
@@ -101,15 +104,26 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
 
 
 async def sending_worker():
+    prev_sending_timestamp = 0
     if not config.should_send_danmaku:
         return
     while 1:
         try:
             async with waiting_for_appending_queue_lock:
+                dt = time.time() - prev_sending_timestamp
+                if dt < config.sending_delay:
+                    logger.info(f"Postpone {round(dt, 4)} seconds before sending due to sending delay.")
+                    await asyncio.sleep(config.sending_delay - dt)
                 msg = msg_queue.pop(0)
                 resp = await network.send_danmaku(msg)
+                prev_sending_timestamp = time.time()
                 logger.success(f"Sent: {msg}")
                 logger.debug(resp)
+        except RuntimeError:
+            # Ignore RuntimeError('Lock is not acquired.')
+            # Why it occurs?
+            # Cuz when the #send_danmaku is awaiting, the lock might be unlocked by voice2text_worker
+            pass
         except Exception as e:
             logger.error(repr(e))
         finally:

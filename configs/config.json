@@ -2,7 +2,7 @@
   "platform": "bilibili",
   "room_id": "1852504554",
   "danmaku_display_mode": "BOTTOM",
-  "send_delay": 5,
+  "sending_delay": 2,
   "segment_time_length": 5,
   "whisper_params": {
     "language": "en",

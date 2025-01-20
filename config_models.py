@@ -18,7 +18,7 @@ class Config(MyBaseModel):
     platform: str
     room_id: int
     danmaku_display_mode: Literal["FLY", "TOP", "BOTTOM"]
-    send_delay: int
+    sending_delay: int
     segment_time_length: int
     whisper_params: dict
     danmaku_text_format: str
