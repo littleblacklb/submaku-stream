@@ -20,6 +20,7 @@ class Config(MyBaseModel):
     danmaku_display_mode: Literal["FLY", "TOP", "BOTTOM"]
     sending_delay: int
     segment_time_length: int
+    model_name: Literal["tiny", "base", "small", "medium", "large", "turbo"]
     whisper_params: dict
     danmaku_text_format: str
     max_order_num: int
