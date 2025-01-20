@@ -1,18 +1,17 @@
 import re
 
 
-def remove_repeated_phrases(text):
+def remove_redundant_repeats(text):
     """
-    Removes consecutive repeated phrases of unknown length from the given text.
+    Remove redundant repeats
 
-    Args:
-        text (str): The input text containing potential repetitions.
+    Such as Hello world REPEAT A REPEAT A REPEAT A REPEAT B REPEAT B AA REPEAT B REPEAT B
 
-    Returns:
-        str: The text with consecutive repetitions removed.
+    -> Such as Helo world REPEAT A REPEAT B A REPEAT B
+
+    :param text: original text
+    :return: processed text
     """
-    # Regex to match repeated phrases, allowing for spaces or punctuation
-    pattern = r"(\b.+?\b)(?:\s+\1)+"
-    # Remove the repetition parts
-    cleaned_text = re.sub(pattern, "", text, flags=re.IGNORECASE)
-    return cleaned_text
+    pattern = r"(.*?)(\1+)"
+    result = re.sub(pattern, r"\1", text)
+    return result

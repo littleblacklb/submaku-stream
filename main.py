@@ -70,7 +70,7 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
     if not (res_text := result["text"]):
         logger.info(f'<EMPTY> {delta_t_perf:.2f}ms')
         return
-    processed_transcription_text = text.remove_repeated_phrases(res_text)
+    processed_transcription_text = text.remove_redundant_repeats(res_text)
     formatted_text = config.danmaku_text_format.format(
         transcription_text=processed_transcription_text,
         sent_danmaku_amount=sent_danmaku_amount,
