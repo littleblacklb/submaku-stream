@@ -24,6 +24,8 @@ class Config(MyBaseModel):
     danmaku_text_format: str
     max_order_num: int
     should_send_danmaku: bool
+    max_chars_per_danmaku: int
+    max_chars_per_audio_segment: int
     debug: bool
 
 

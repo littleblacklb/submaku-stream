@@ -17,5 +17,7 @@
   "max_order_num": 10,
   "danmaku_text_format": "{transcription_text} {danmaku_order_num}",
   "should_send_danmaku": true,
+  "max_chars_per_danmaku": 20,
+  "max_chars_per_audio_segment": 40,
   "debug": false
 }

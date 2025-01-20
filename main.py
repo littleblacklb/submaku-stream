@@ -78,7 +78,23 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
     )
     logger.debug(sent_danmaku_amount)
     logger.info(f'{formatted_text} {delta_t_perf:.2f}ms')
-    msg_queue.append(formatted_text)
+
+    # Text segmentation
+    if config.max_chars_per_danmaku and len(formatted_text) > config.max_chars_per_danmaku:
+        logger.info("Text is trimmed due to exceeding char limits.")
+        mcpd = config.max_chars_per_danmaku
+        mcpas = config.max_chars_per_audio_segment if config.max_chars_per_audio_segment != 0 else len(formatted_text)
+        formatted_text = formatted_text[:mcpas]
+        i = 0
+        end = 0
+        for end in range(mcpd, mcpas + 1, mcpd):
+            segment = formatted_text[end - mcpd:end]
+            logger.info(f"Segment{i}: {segment}")
+            msg_queue.append(segment)
+            i += 1
+        formatted_text = formatted_text[end: end + mcpd - 1]
+    if formatted_text:
+        msg_queue.append(formatted_text)
     if waiting_for_appending_queue_lock.locked():
         # The msg_queue is not empty now.
         waiting_for_appending_queue_lock.release()
