@@ -16,5 +16,6 @@
   },
   "max_order_num": 10,
   "danmaku_text_format": "{transcription_text} {danmaku_order_num}",
+  "should_send_danmaku": true,
   "debug": false
 }

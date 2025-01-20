@@ -23,6 +23,7 @@ class Config(MyBaseModel):
     whisper_params: dict
     danmaku_text_format: str
     max_order_num: int
+    should_send_danmaku: bool
     debug: bool
 
 
