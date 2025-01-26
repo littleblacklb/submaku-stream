@@ -112,8 +112,9 @@ async def sending_worker():
             async with waiting_for_appending_queue_lock:
                 dt = time.time() - prev_sending_timestamp
                 if dt < config.sending_delay:
-                    logger.info(f"Postpone {round(dt, 4)} seconds before sending due to sending delay.")
-                    await asyncio.sleep(config.sending_delay - dt)
+                    time_to_sleep = config.sending_delay - dt
+                    logger.info(f"Postpone {round(time_to_sleep, 4)} seconds before sending due to sending delay.")
+                    await asyncio.sleep(time_to_sleep)
                 msg = msg_queue.pop(0)
                 resp = await network.send_danmaku(msg)
                 prev_sending_timestamp = time.time()
