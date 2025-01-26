@@ -15,6 +15,7 @@ class MyBaseModel(BaseModel):
 
 
 class Config(MyBaseModel):
+    program_display_language: Literal["zh_CN", "en"]
     platform: str
     room_id: int
     danmaku_display_mode: Literal["FLY", "TOP", "BOTTOM"]

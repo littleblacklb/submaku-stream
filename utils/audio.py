@@ -7,6 +7,7 @@ import numpy as np
 import soundfile as sf
 
 from errors.EndOfStream import EndOfStream
+from locales.i18n import gettext as _
 
 logger = loguru.logger
 
@@ -34,12 +35,10 @@ async def process_audio_segments(stream_url, chunk_duration=10, sample_rate=1600
 
     # Start the FFmpeg process
     process: Popen = (
-        ffmpeg
-        .input(stream_url, **input_args)
-        .output("pipe:1", format="s16le", acodec="pcm_s16le", ar=sample_rate, ac=1)  # 16kHz, mono
-        .run_async(pipe_stdout=True, pipe_stderr=True, quiet=True)
-    )
-    logger.success("FFmpeg process has been launched.")
+        ffmpeg.input(stream_url, **input_args).output("pipe:1", format="s16le", acodec="pcm_s16le", ar=sample_rate,
+                                                      ac=1)  # 16kHz, mono
+        .run_async(pipe_stdout=True, pipe_stderr=True, quiet=True))
+    logger.success(_("FFmpeg process has been launched."))
 
     while True:
         # Read fixed-length audio chunks from the stream
@@ -47,11 +46,11 @@ async def process_audio_segments(stream_url, chunk_duration=10, sample_rate=1600
         raw_audio = await asyncio.to_thread(process.stdout.read, chunk_size)
 
         if not raw_audio:
-            raise EndOfStream("Stream ended.")
+            raise EndOfStream(_("Stream ended."))
         if len(raw_audio) < chunk_size:
-            logger.warning("Less than chunk_size.")
+            logger.warning(_("The input raw_audio's size is less than chunk_size."))
 
-        # Convert raw audio to NumPy array
+        # Convert raw_audio to NumPy array
         audio_array = np.frombuffer(raw_audio, dtype=np.int16).astype(np.float32) / 32768.0  # Normalize
         yield audio_array
 
@@ -71,4 +70,4 @@ def save_audio_to_wav(audio_array, sample_rate, output_file):
     # Ensure the audio array is in the correct range and format
     audio_array = (audio_array * 32768).astype('int16')  # Convert back to 16-bit PCM format
     sf.write(output_file, audio_array, samplerate=sample_rate)
-    print(f"Audio saved to {output_file}")
+    print(_("Audio saved to {}").format(output_file))

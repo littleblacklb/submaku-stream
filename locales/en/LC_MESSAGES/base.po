@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1.0\n"
+"POT-Creation-Date: 2025-01-27 00:13+0800\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.py:30
+msgid "Debug mode is enabled."
+msgstr ""
+
+#: main.py:34
+msgid "Stream URL: {}"
+msgstr ""
+
+#: main.py:36
+msgid "Loading model..."
+msgstr ""
+
+#: main.py:40
+msgid "Model loaded. {:.2f}ms"
+msgstr ""
+
+#: main.py:44
+msgid "sending_worker task has been created."
+msgstr ""
+
+#: main.py:51
+msgid "Stream ended, program exiting."
+msgstr ""
+
+#: main.py:54
+msgid "Error occurred while processing the audio stream:"
+msgstr ""
+
+#: main.py:72
+msgid "<EMPTY> {:.2f}ms"
+msgstr ""
+
+#: main.py:81
+msgid "{} {:.2f}ms"
+msgstr ""
+
+#: main.py:85
+msgid "Text is trimmed due to exceeding char limits."
+msgstr ""
+
+#: main.py:93
+#, python-brace-format
+msgid "Segment{i}: {segment}"
+msgstr ""
+
+#: main.py:98
+#, python-brace-format
+msgid "Segment{i}: {formatted_text}"
+msgstr ""
+
+#: main.py:117
+msgid "Postpone {:.4f} seconds before sending due to sending delay."
+msgstr ""
+
+#: main.py:122
+msgid "Sent: {}"
+msgstr ""
+
+#: main.py:133
+msgid "Queue is empty"
+msgstr ""
+
+#: utils/audio.py:41
+msgid "FFmpeg process has been launched."
+msgstr ""
+
+#: utils/audio.py:49
+#, fuzzy
+msgid "Stream ended."
+msgstr ""
+
+#: utils/audio.py:51
+msgid "The input raw_audio's size is less than chunk_size."
+msgstr ""
+
+#: utils/audio.py:73
+msgid "Audio saved to {}"
+msgstr ""
