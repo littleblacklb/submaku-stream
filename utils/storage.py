@@ -15,7 +15,7 @@ CREDENTIAL_PATH = CONFIG_BASE_PATH / "credential.json"
 
 
 class ConfigStorage:
-    _instance = None
+    __instance = None
 
     def __init__(self):
         self.config = Config.load_from_json(CONFIG_PATH)
@@ -23,9 +23,9 @@ class ConfigStorage:
 
     @classmethod
     def get_instance(cls: Type[T]) -> T:
-        if not ConfigStorage._instance:
-            ConfigStorage._instance = ConfigStorage()
-        return ConfigStorage._instance
+        if not ConfigStorage.__instance:
+            ConfigStorage.__instance = ConfigStorage()
+        return ConfigStorage.__instance
 
 
 _config = ConfigStorage.get_instance()
