@@ -77,8 +77,7 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
         sent_danmaku_amount=sent_danmaku_amount,
         danmaku_order_num=sent_danmaku_amount % config.max_order_num
     )
-    logger.debug(sent_danmaku_amount)
-    logger.info(f'{formatted_text} {delta_t_perf:.2f}ms')
+    logger.info(_('{} {:.2f}ms').format(formatted_text, delta_t_perf))
 
     # Text segmentation
     if config.max_chars_per_danmaku and len(formatted_text) > config.max_chars_per_danmaku:
