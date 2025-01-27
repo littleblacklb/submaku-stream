@@ -1,6 +1,6 @@
 from bilibili_api import sync
 
-from utils.network import send_danmaku
+from .utils.network import send_danmaku
 
 
 async def test():

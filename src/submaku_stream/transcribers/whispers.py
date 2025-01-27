@@ -7,8 +7,8 @@ import numpy as np
 import torch
 import whisper
 
-from base.transcriber import BaseTranscriber
-from utils.storage import ConfigStorage
+from ..base.transcriber import BaseTranscriber
+from ..utils.storage import ConfigStorage
 
 
 class LocalWhisper(BaseTranscriber):

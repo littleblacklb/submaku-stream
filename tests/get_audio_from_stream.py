@@ -1,7 +1,7 @@
 from bilibili_api import sync
 
-from utils.audio import process_audio_segments, save_audio_to_wav
-from utils.network import get_stream_urls
+from .utils.audio import process_audio_segments, save_audio_to_wav
+from .utils.network import get_stream_urls
 
 
 async def test():

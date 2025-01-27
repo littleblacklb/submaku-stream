@@ -7,12 +7,12 @@ import loguru
 import numpy as np
 from whisper import Whisper
 
-from errors.EndOfStream import EndOfStream
-from locales.i18n import gettext as _
-from transcribers import whispers
-from utils import network, text
-from utils.audio import process_audio_segments
-from utils.storage import ConfigStorage
+from .errors.EndOfStream import EndOfStream
+from .locales.i18n import gettext as _
+from .transcribers import whispers
+from .utils import network, text
+from .utils.audio import process_audio_segments
+from .utils.storage import ConfigStorage
 
 logger = loguru.logger
 config = ConfigStorage.get_instance().config

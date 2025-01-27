@@ -3,9 +3,9 @@ import time
 import whisper
 from bilibili_api import sync
 
-from utils.audio import process_audio_segments
-from utils.network import get_stream_urls
-from utils.storage import ConfigStorage
+from .utils.audio import process_audio_segments
+from .utils.network import get_stream_urls
+from .utils.storage import ConfigStorage
 
 
 async def main():
