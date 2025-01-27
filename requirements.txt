@@ -2,7 +2,8 @@ httpx
 bilibili-api-python
 pydantic~=2.10.5
 ffmpeg-python~=0.2.0
-numpy
-soundfile
-openai-whisper
-loguru
+numpy~=2.0.2
+soundfile~=0.13.0
+openai-whisper~=20240930
+loguru~=0.7.3
+torch~=2.5.1
