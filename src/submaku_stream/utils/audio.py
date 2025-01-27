@@ -5,8 +5,8 @@ import ffmpeg
 import loguru
 import numpy as np
 import soundfile as sf
+from anyio import EndOfStream
 
-from ..errors.EndOfStream import EndOfStream
 from ..locales.i18n import gettext as _
 
 logger = loguru.logger

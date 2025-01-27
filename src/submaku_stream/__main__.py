@@ -5,9 +5,9 @@ import time
 import ffmpeg
 import loguru
 import numpy as np
+from anyio import EndOfStream
 from whisper import Whisper
 
-from .errors.EndOfStream import EndOfStream
 from .locales.i18n import gettext as _
 from .transcribers import whispers
 from .utils import network, text
