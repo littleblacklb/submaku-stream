@@ -7,9 +7,12 @@ from loguru import logger
 """
 Executable-related constants
 """
+
+# https://pyinstaller.org/en/stable/runtime-information.html
 # Whether the script is running in a frozen environment (e.g. Compiled from PyInstaller)
-IS_FROZEN_ENV = getattr(sys, 'frozen', False)
-MEI_PATH = ""
+IS_FROZEN_ENV: bool = getattr(sys, 'frozen', False)
+# Resource folder exists while the program is running in a Pyinstaller bundle
+MEI_PATH: Path = Path()
 if hasattr(sys, '_MEIPASS'):
     # noinspection PyProtectedMember
     MEI_PATH = Path(sys._MEIPASS)
@@ -27,15 +30,16 @@ Case3 User-defined: "user-defined path"
 
 ROOT_PATH = Path(sys.executable).parent if IS_FROZEN_ENV else Path(__file__).parent
 
-# User-defined path
+# Case3: User-defined path
 if path := os.getenv("CONFIG_BASE_PATH"):
     CONFIG_BASE_PATH = Path(path)
 else:
-    # Might be executable file's root path
+    # Case1: Might be an executable file's root path
     CONFIG_BASE_PATH = ROOT_PATH.parent / "configs"
     if not CONFIG_BASE_PATH.exists():
-        # Default repo structure path
+        # Case2: Default repo structure path
         CONFIG_BASE_PATH = ROOT_PATH.parent.parent / "configs"
+
 CONFIG_PATH = CONFIG_BASE_PATH / "config.json"
 CREDENTIAL_PATH = CONFIG_BASE_PATH / "credential.json"
 

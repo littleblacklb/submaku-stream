@@ -1,5 +1,5 @@
 """
-Base Transcription
+Base Transcriber
 """
 from abc import ABC, abstractmethod
 
