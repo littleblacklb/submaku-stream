@@ -1,5 +1,6 @@
 {
   "program_display_language": "en",
+  "log_level": "INFO",
   "platform": "bilibili",
   "room_id": "1852504554",
   "danmaku_display_mode": "BOTTOM",

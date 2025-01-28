@@ -24,10 +24,12 @@ msg_queue = asyncio.Queue()
 
 
 async def main():
+    logger.remove()
     if config.debug:
         logger.warning(_("Debug mode is enabled."))
-        logger.remove()
-        logger.add(sys.stdout, level="DEBUG")
+        logger.add(sys.stderr, level="DEBUG")
+    else:
+        logger.add(sys.stderr, level=config.log_level)
     stream_url = (await network.get_stream_urls())[0]
     logger.info(_("Stream URL: {}").format(stream_url))
 
