@@ -58,7 +58,7 @@ msgstr "片段{i}: {formatted_text}"
 
 #: main.py:117
 msgid "Postpone {:.4f} seconds before sending due to sending delay."
-msgstr "由于发送延迟，发送前将延迟{:.4f}秒。"
+msgstr "由于 sending_delay 参数，发送前将延迟{:.4f}秒。"
 
 #: main.py:122
 msgid "Sent: {}"
