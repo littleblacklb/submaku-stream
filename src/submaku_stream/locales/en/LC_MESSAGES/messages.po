@@ -1,71 +1,75 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.0\n"
-"POT-Creation-Date: 2025-01-27 00:13+0800\n"
+"Project-Id-Version:  0.1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-01-28 14:24+0800\n"
+"PO-Revision-Date: 2025-01-28 14:22+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
 
-#: main.py:30
+#: __main__.py:29
 msgid "Debug mode is enabled."
 msgstr ""
 
-#: main.py:34
+#: __main__.py:34
 msgid "Stream URL: {}"
 msgstr ""
 
-#: main.py:36
+#: __main__.py:36
 msgid "Loading model..."
 msgstr ""
 
-#: main.py:40
+#: __main__.py:40
 msgid "Model loaded. {:.2f}ms"
 msgstr ""
 
-#: main.py:44
+#: __main__.py:43
 msgid "sending_worker task has been created."
 msgstr ""
 
-#: main.py:51
+#: __main__.py:50
 msgid "Stream ended, program exiting."
 msgstr ""
 
-#: main.py:54
+#: __main__.py:53
 msgid "Error occurred while processing the audio stream:"
 msgstr ""
 
-#: main.py:72
+#: __main__.py:71
 msgid "<EMPTY> {:.2f}ms"
 msgstr ""
 
-#: main.py:81
+#: __main__.py:79
 msgid "{} {:.2f}ms"
 msgstr ""
 
-#: main.py:85
+#: __main__.py:83
 msgid "Text is trimmed due to exceeding char limits."
 msgstr ""
 
-#: main.py:93
+#: __main__.py:91
 #, python-brace-format
 msgid "Segment{i}: {segment}"
 msgstr ""
 
-#: main.py:98
+#: __main__.py:96
 #, python-brace-format
 msgid "Segment{i}: {formatted_text}"
 msgstr ""
 
-#: main.py:117
+#: __main__.py:111
 msgid "Postpone {:.4f} seconds before sending due to sending delay."
 msgstr ""
 
-#: main.py:122
+#: __main__.py:116
 msgid "Sent: {}"
-msgstr ""
-
-#: main.py:133
-msgid "Queue is empty"
 msgstr ""
 
 #: utils/audio.py:41
@@ -73,7 +77,6 @@ msgid "FFmpeg process has been launched."
 msgstr ""
 
 #: utils/audio.py:49
-#, fuzzy
 msgid "Stream ended."
 msgstr ""
 
@@ -84,3 +87,4 @@ msgstr ""
 #: utils/audio.py:73
 msgid "Audio saved to {}"
 msgstr ""
+
