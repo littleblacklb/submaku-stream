@@ -20,9 +20,7 @@ config = ConfigStorage.get_instance().config
 sent_danmaku_amount = 0
 
 # Danmaku that awaits to be sent
-msg_queue = []
-# The lock is locked when the queue is empty
-waiting_for_appending_queue_lock = asyncio.Lock()
+msg_queue = asyncio.Queue()
 
 
 async def main():
@@ -39,7 +37,6 @@ async def main():
     delta_t_perf = (time.time() - t0_perf) * 1000
     logger.success(_("Model loaded. {:.2f}ms").format(delta_t_perf))
 
-    await waiting_for_appending_queue_lock.acquire()
     asyncio.create_task(sending_worker())
     logger.success(_("sending_worker task has been created."))
 
@@ -90,17 +87,14 @@ async def voice2text_worker(model: Whisper, audio_array: np.ndarray):
         for end in range(mcpd, len(formatted_text) + 1, mcpd):
             segment = formatted_text[end - mcpd:end]
             logger.info(_("Segment{i}: {segment}").format(i=i, segment=segment))
-            msg_queue.append(segment)
+            await msg_queue.put(segment)
             i += 1
         formatted_text = formatted_text[end: end + mcpd - 1]
         if formatted_text:
             logger.info(_("Segment{i}: {formatted_text}").format(i=i, formatted_text=formatted_text))
 
     if formatted_text:
-        msg_queue.append(formatted_text)
-    if waiting_for_appending_queue_lock.locked():
-        # The msg_queue is not empty now.
-        waiting_for_appending_queue_lock.release()
+        await msg_queue.put(formatted_text)
 
 
 async def sending_worker():
@@ -109,28 +103,18 @@ async def sending_worker():
         return
     while 1:
         try:
-            async with waiting_for_appending_queue_lock:
-                dt = time.time() - prev_sending_timestamp
-                if dt < config.sending_delay:
-                    time_to_sleep = config.sending_delay - dt
-                    logger.info(_("Postpone {:.4f} seconds before sending due to sending delay.").format(time_to_sleep))
-                    await asyncio.sleep(time_to_sleep)
-                msg = msg_queue.pop(0)
-                resp = await network.send_danmaku(msg)
-                prev_sending_timestamp = time.time()
-                logger.success(_("Sent: {}").format(msg))
-                logger.debug(resp)
-        except RuntimeError:
-            # Ignore RuntimeError('Lock is not acquired.')
-            # Why it occurs?
-            # Cuz when the #send_danmaku is awaiting, the lock might be unlocked by voice2text_worker
-            pass
+            dt = time.time() - prev_sending_timestamp
+            if dt < config.sending_delay:
+                time_to_sleep = config.sending_delay - dt
+                logger.info(_("Postpone {:.4f} seconds before sending due to sending delay.").format(time_to_sleep))
+                await asyncio.sleep(time_to_sleep)
+            msg = await msg_queue.get()
+            resp = await network.send_danmaku(msg)
+            prev_sending_timestamp = time.time()
+            logger.success(_("Sent: {}").format(msg))
+            logger.debug(resp)
         except Exception as e:
             logger.error(repr(e))
-        finally:
-            if len(msg_queue) == 0:
-                logger.debug(_("Queue is empty"))
-                await waiting_for_appending_queue_lock.acquire()
 
 
 if __name__ == '__main__':
