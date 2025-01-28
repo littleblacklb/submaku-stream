@@ -13,7 +13,7 @@
     "suppress_tokens": [
       -1
     ],
-    "temperature": 0.1,
+    "temperature": 0,
     "beam_size": 5,
     "best_of": 5
   },
