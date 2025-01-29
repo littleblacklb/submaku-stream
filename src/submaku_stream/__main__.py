@@ -6,6 +6,8 @@ import ffmpeg
 import loguru
 import numpy as np
 from anyio import EndOfStream
+from bilibili_api import ResponseCodeException
+from httpx import NetworkError
 from whisper import Whisper
 
 from .locales.i18n import gettext as _
@@ -39,13 +41,28 @@ class DanmakuManager:
     async def sending_worker(self):
         if not config.should_send_danmaku:
             return
-        while 1:
-            try:
-                # TODO Failure retry
-                await self._send_danmaku(await self._msg_queue.get())
-                self._sent_danmaku_amount += 1
-            except Exception as e:
-                logger.error(repr(e))
+        while True:
+            # Include the normal sending process
+            for t in range(0, config.retry_times + 1):
+                if t > 0:
+                    logger.info(_("Retry times: {}").format(t))
+                try:
+                    await self._send_danmaku(await self._msg_queue.get())
+                    break
+                except ResponseCodeException as e:
+                    logger.error(str(e))
+                    # 超出限制长度
+                    if e.code == 1003212:
+                        return
+                except NetworkError as e:
+                    logger.error(str(e))
+                    logger.warning(_("Network error occurred, retrying..."))
+                except Exception as e:
+                    logger.error(repr(e))
+            else:  # If the loop is not broken
+                logger.warning(_("Retry times exceeded, so current task is given up."))
+                return
+            self._sent_danmaku_amount += 1
 
     async def put_danmaku(self, msg):
         await self._msg_queue.put(msg)
