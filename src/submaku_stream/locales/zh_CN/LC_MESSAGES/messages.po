@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  0.1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-28 14:24+0800\n"
+"POT-Creation-Date: 2025-01-29 23:34+0800\n"
 "PO-Revision-Date: 2025-01-28 14:21+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -14,63 +14,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
 
-#: __main__.py:29
+#: __main__.py:26
 msgid "Debug mode is enabled."
 msgstr "调试模式已启用。"
 
-#: __main__.py:34
-msgid "Stream URL: {}"
-msgstr "直播流地址: {}"
-
-#: __main__.py:36
+#: __main__.py:32
 msgid "Loading model..."
 msgstr "加载模型..."
 
-#: __main__.py:40
+#: __main__.py:36
 msgid "Model loaded. {:.2f}ms"
 msgstr "模型加载完成。{:.2f}毫秒"
 
-#: __main__.py:43
+#: __main__.py:42
+msgid "Stream URL: {}"
+msgstr "直播流地址: {}"
+
+#: __main__.py:48
 msgid "sending_worker task has been created."
 msgstr "发送工作任务已创建。"
 
-#: __main__.py:50
+#: __main__.py:54
 msgid "Stream ended, program exiting."
 msgstr "直播流已结束，程序正在退出。"
 
-#: __main__.py:53
+#: __main__.py:57
 msgid "Error occurred while processing the audio stream:"
 msgstr "处理音频流时发生错误："
-
-#: __main__.py:71
-msgid "<EMPTY> {:.2f}ms"
-msgstr "<空> {:.2f}毫秒"
-
-#: __main__.py:79
-msgid "{} {:.2f}ms"
-msgstr "{} {:.2f}毫秒"
-
-#: __main__.py:83
-msgid "Text is trimmed due to exceeding char limits."
-msgstr "文本已被截断，超出字符限制。"
-
-#: __main__.py:91
-#, python-brace-format
-msgid "Segment{i}: {segment}"
-msgstr "片段{i}: {segment}"
-
-#: __main__.py:96
-#, python-brace-format
-msgid "Segment{i}: {formatted_text}"
-msgstr "片段{i}: {formatted_text}"
-
-#: __main__.py:111
-msgid "Postpone {:.4f} seconds before sending due to sending delay."
-msgstr "由于 sending_delay 参数，发送前将延迟{:.4f}秒。"
-
-#: __main__.py:116
-msgid "Sent: {}"
-msgstr "已发送: {}"
 
 #: utils/audio.py:41
 msgid "FFmpeg process has been launched."
@@ -88,4 +58,47 @@ msgstr "输入的 raw_audio 的大小比 chunk_size 小"
 #: utils/audio.py:73
 msgid "Audio saved to {}"
 msgstr "音频保存至"
+
+#: workers/danmaku_sender.py:27
+msgid "Postpone {:.4f} seconds before sending due to sending delay."
+msgstr "由于 sending_delay 参数，发送前将延迟{:.4f}秒。"
+
+#: workers/danmaku_sender.py:31
+msgid "Sent: {}"
+msgstr "已发送: {}"
+
+#: workers/danmaku_sender.py:41
+msgid "Retry times: {}"
+msgstr "重试第{}次"
+
+#: workers/danmaku_sender.py:52
+msgid "Network error occurred, retrying..."
+msgstr "网络错误，正在重试..."
+
+#: workers/danmaku_sender.py:56
+#, fuzzy
+msgid "Retry times exceed max_retry_times, so current task is given up."
+msgstr "重试次数超过最大次数，当前任务被放弃。"
+
+#: workers/voice2text.py:29
+msgid "<EMPTY> {:.2f}ms"
+msgstr "<空> {:.2f}毫秒"
+
+#: workers/voice2text.py:39
+msgid "{} {:.2f}ms"
+msgstr "{} {:.2f}毫秒"
+
+#: workers/voice2text.py:43
+msgid "Text is trimmed due to exceeding char limits."
+msgstr "文本已被截断，超出字符限制。"
+
+#: workers/voice2text.py:51
+#, python-brace-format
+msgid "Segment{i}: {segment}"
+msgstr "片段{i}: {segment}"
+
+#: workers/voice2text.py:56
+#, python-brace-format
+msgid "Segment{i}: {formatted_text}"
+msgstr "片段{i}: {formatted_text}"
 

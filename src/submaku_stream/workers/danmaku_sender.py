@@ -40,7 +40,7 @@ class DanmakuSendingWorker:
             return
         while True:
             # Include the normal sending process
-            for t in range(0, config.retry_times + 1):
+            for t in range(0, config.max_retry_times + 1):
                 if t > 0:
                     logger.info(_("Retry times: {}").format(t))
                 try:
@@ -57,7 +57,7 @@ class DanmakuSendingWorker:
                 except Exception as e:
                     logger.error(repr(e))
             else:  # If the loop is not broken
-                logger.warning(_("Retry times exceeded, so current task is given up."))
+                logger.warning(_("Retry times exceed max_retry_times, so current task is given up."))
                 return
             self._sent_danmaku_amount += 1
 
