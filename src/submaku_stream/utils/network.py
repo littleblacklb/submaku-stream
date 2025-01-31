@@ -1,17 +1,6 @@
-from bilibili_api import Danmaku, DmMode
 from bilibili_api.live import ScreenResolution
 
-from ..utils.storage import Constants, ConfigStorage
-
-
-async def send_danmaku(msg: str) -> dict:
-    """
-    Send a danmaku to bilibili live room.
-    :param msg: message to be sent
-    :return: API result
-    """
-    sematic_code = ConfigStorage.get_instance().config.danmaku_display_mode
-    return await Constants.live_room.send_danmaku(Danmaku(msg, mode=DmMode[sematic_code].value))
+from ..utils.storage import Constants
 
 
 async def get_stream_urls() -> list:
